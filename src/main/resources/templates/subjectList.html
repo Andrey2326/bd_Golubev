@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список предметов</title>
+</head>
+<body>
+<h1>Список предметов</h1>
+
+<form action="/subjects/add" method="post">
+    <input type="text" name="subjectName" placeholder="Название предмета" required>
+    <button type="submit">Добавить предмет</button>
+</form>
+
+<h2>Все предметы:</h2>
+<ul>
+    <!-- Цикл по всем предметам из списка -->
+    <th:block th:each="subject : ${subjects}">
+        <li>
+            <span th:text="${subject.subjectName}"></span>
+
+            <form action="/subjects/update" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${subject.id}"/>
+                <input type="text" name="subjectName" placeholder="Название предмета" required/>
+                <button type="submit">Обновить</button>
+            </form>
+
+            <form action="/subjects/delete" method="post" style="display:inline;">
+                <input type="hidden" name="id" th:value="${subject.id}"/>
+                <button type="submit">Удалить</button>
+            </form>
+        </li>
+    </th:block>
+</ul>
+
+<h2>Фильтрация предметов:</h2>
+<form action="/subjects/filter" method="get">
+    <input type="text" name="subjectName" placeholder="Название предмета">
+    <input type="checkbox" name="deleted"> Показать удаленные
+    <button type="submit">Фильтровать</button>
+</form>
+
+<h2>Множественное удаление:</h2>
+<form action="/subjects/deleteMultiple" method="post">
+    <th:block th:each="subject : ${subjects}">
+        <input type="checkbox" name="ids" th:value="${subject.id}">
+        <span th:text="${subject.subjectName}"></span><br>
+    </th:block>
+    <button type="submit">Удалить выбранные</button>
+</form>
+
+</body>
+</html>
+
